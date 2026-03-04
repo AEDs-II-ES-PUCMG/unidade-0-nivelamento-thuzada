@@ -1,11 +1,13 @@
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
-public class Produto {
+public abstract class Produto {
 	
 	protected static final double MARGEM_PADRAO = 0.2;
-	private String descricao;
-	private double precoCusto;
-	private double margemLucro;
+	public String descricao;
+	public double precoCusto;
+	public double margemLucro;
 	
 	/**
      * Inicializador privado. Os valores default, em caso de erro, são:
@@ -53,6 +55,47 @@ public class Produto {
      */
 	public double valorDeVenda() {
 		return (precoCusto * (1.0 + margemLucro));
+	}
+	/**
+	* Igualdade de produtos: caso possuam o mesmo nome/descrição.
+	* @param obj Outro produto a ser comparado
+	* @return booleano true/false conforme o parâmetro possua a descrição igual ou não a este produto.
+	*/
+	@Override
+	public boolean equals(Object obj){
+		Produto outro = (Produto)obj;
+		return this.descricao.toLowerCase().equals(outro.descricao.toLowerCase());
+	}
+
+	/**
+	* Gera uma linha de texto a partir dos dados do produto
+	* @return Uma string no formato "tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
+	*/
+	public abstract String gerarDadosTexto();
+
+	/**
+	* Cria um produto a partir de uma linha de dados em formato texto. A linha de dados deve estar de acordo com a
+	formatação
+	* "tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
+	* ou o funcionamento não será garantido. Os tipos são 1 para produto não perecível e 2 para perecível.
+	* @param linha Linha com os dados do produto a ser criado.
+	* @return Um produto com os dados recebidos
+	*/
+	static Produto criarDoTexto(String linha){
+		Produto novoProduto = null;
+		String[] partes = linha.split(";");
+		int tipo = Integer.parseInt(partes[0].trim());
+		String descricao = partes[1].trim();
+		double precoCusto = Double.parseDouble(partes[2].trim());
+		double margemLucro = Double.parseDouble(partes[3].trim());
+		if (tipo == 1) {
+			novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+		} else if (tipo == 2) {
+			String dataValidade = partes[4].trim();
+			novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro,
+					LocalDate.parse(dataValidade, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
+		return novoProduto;
 	}
 	
 	/**
