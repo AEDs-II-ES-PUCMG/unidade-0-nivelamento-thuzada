@@ -2,7 +2,7 @@ import java.text.NumberFormat;
 
 public class Produto {
 	
-	private static final double MARGEM_PADRAO = 0.2;
+	protected static final double MARGEM_PADRAO = 0.2;
 	private String descricao;
 	private double precoCusto;
 	private double margemLucro;
