@@ -5,5 +5,5 @@ Atividade de revisão e nivelamento da disciplina de AEDs II, abordando programa
 
 ## Aluno
 
-* Arthur Augusto Domingos silva
+* Arthur Augusto Domingos Silva
 

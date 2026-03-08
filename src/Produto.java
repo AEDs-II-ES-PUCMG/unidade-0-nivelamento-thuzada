@@ -86,8 +86,8 @@ public abstract class Produto {
 		String[] partes = linha.split(";");
 		int tipo = Integer.parseInt(partes[0].trim());
 		String descricao = partes[1].trim();
-		double precoCusto = Double.parseDouble(partes[2].trim());
-		double margemLucro = Double.parseDouble(partes[3].trim());
+		double precoCusto = Double.parseDouble(partes[2].trim().replace(",", "."));
+		double margemLucro = Double.parseDouble(partes[3].trim().replace(",", "."));
 		if (tipo == 1) {
 			novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
 		} else if (tipo == 2) {
